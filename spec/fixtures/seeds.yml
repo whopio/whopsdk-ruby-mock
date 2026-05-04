@@ -1,0 +1,14 @@
+company:
+  - id: biz_seeded
+    title: Seeded Co
+membership:
+  - id: mem_seeded_1
+    company_id: biz_seeded
+    status: active
+  - company_id: biz_seeded
+    status: paused
+payment:
+  - id: pay_seeded
+    company_id: biz_seeded
+    status: paid
+    substatus: succeeded

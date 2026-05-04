@@ -1,0 +1,89 @@
+module WhopMock
+  type record = Hash[String, untyped]
+  type fixture_payload = Hash[String, Array[record]]
+
+  VERSION: String
+
+  class Error < StandardError
+  end
+
+  class NotFoundError < Error
+  end
+
+  class Configuration
+    attr_accessor api_base_path: String
+    attr_accessor debug: bool
+    attr_accessor debug_io: untyped
+    attr_accessor id_prefixes: Hash[String, String]
+    attr_accessor spec_path: String
+
+    def initialize: () -> void
+  end
+
+  class Session
+    attr_reader configuration: Configuration
+    attr_reader dispatcher: untyped
+    attr_reader error_injector: untyped
+    attr_reader example_generator: untyped
+    attr_reader fallback_registry: untyped
+    attr_reader id_generator: untyped
+    attr_reader payment_token_store: untyped
+    attr_reader requester: untyped
+    attr_reader route_registry: untyped
+    attr_reader schema_registry: untyped
+    attr_reader spec: Hash[String, untyped]
+    attr_reader store: untyped
+    attr_reader webhook_simulator: untyped
+
+    def self.build: (spec_path: String, configuration: Configuration) -> Session
+
+    def initialize: (
+      configuration: Configuration,
+      debug_logger: untyped,
+      dispatcher: untyped,
+      error_injector: untyped,
+      example_generator: untyped,
+      fallback_registry: untyped,
+      id_generator: untyped,
+      payment_token_store: untyped,
+      requester: untyped,
+      route_registry: untyped,
+      schema_registry: untyped,
+      spec: Hash[String, untyped],
+      store: untyped,
+      webhook_simulator: untyped
+    ) -> void
+  end
+
+  def self.configure: () { (Configuration) -> untyped } -> Configuration
+  def self.configuration: () -> Configuration
+  def self.reset_configuration!: () -> Configuration
+
+  def self.session: () -> Session?
+  def self.start: (?spec_path: String) -> Session
+               | (?spec_path: String) { (Session) -> untyped } -> untyped
+  def self.stop: () -> nil
+
+  def self.requester: () -> untyped
+  def self.install!: (untyped client, ?spec_path: String) -> untyped
+  def self.uninstall!: (untyped client) -> untyped
+
+  def self.prepare_error: (singleton(StandardError) | singleton(Exception) | Symbol | String error_class, Symbol | String action_key, ?message: String?, **untyped attributes) -> untyped
+
+  def self.mock_webhook_event: (String | Symbol event_type, ?Hash[Symbol | String, untyped] overrides) -> record
+  def self.sign_webhook: (Hash[Symbol | String, untyped] | String payload, secret: String, ?webhook_id: String?, ?timestamp: Integer) -> record
+
+  def self.generate_payment_token: (**untyped attributes) -> record
+  def self.generate_example: (String | Symbol resource_name, ?Hash[Symbol | String, untyped] overrides) -> record
+
+  def self.seed: (String | Symbol resource_name, ?Hash[Symbol | String, untyped] overrides) -> record
+  def self.seed_many: (String | Symbol resource_name, Array[Hash[Symbol | String, untyped]?] rows) -> Array[record]
+  def self.load_fixtures: (String path) -> fixture_payload
+
+  def self.create_test_helper: () -> untyped
+  def self.toggle_debug: (?bool enabled, ?io: untyped) -> bool
+
+  def self.register_fallback: () { (**untyped) -> untyped } -> untyped
+  def self.clear_fallbacks!: () -> untyped
+  def self.search: (String | Symbol resource_name, query: String, ?filters: Hash[Symbol | String, untyped]) -> Array[record]
+end

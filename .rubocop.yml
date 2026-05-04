@@ -1,0 +1,82 @@
+AllCops:
+  TargetRubyVersion: 3.1
+  SuggestExtensions: false
+  NewCops: enable
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+# This is a test mock library - complexity is acceptable for graph/state code
+Metrics/MethodLength:
+  Max: 70
+  Exclude:
+    - "spec/**/*"
+    - "examples/**/*"
+
+Metrics/AbcSize:
+  Max: 90
+
+Metrics/CyclomaticComplexity:
+  Max: 40
+
+Metrics/PerceivedComplexity:
+  Max: 40
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
+    - "examples/**/*"
+    - "*.gemspec"
+
+Metrics/ClassLength:
+  Max: 500
+
+Metrics/ModuleLength:
+  Max: 500
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 170
+  Exclude:
+    - "spec/**/*"
+
+# Not needed for internal library
+Style/Documentation:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/KeywordArgumentsMerging:
+  Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+# Test helpers may have unused args for consistency
+Lint/UnusedMethodArgument:
+  AllowUnusedKeywordArguments: true
+
+Lint/DuplicateBranch:
+  Enabled: false
+
+Lint/IneffectiveAccessModifier:
+  Enabled: false
+
+Lint/StructNewOverride:
+  Enabled: false
+
+Lint/EmptyConditionalBody:
+  Enabled: false
+
+# Dev dependencies in gemspec is fine
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false

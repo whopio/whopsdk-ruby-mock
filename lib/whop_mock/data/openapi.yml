@@ -1,0 +1,7 @@
+openapi: 3.1.0
+info:
+  title: Whop Mock Placeholder
+  version: 0.0.1
+paths: {}
+components:
+  schemas: {}
