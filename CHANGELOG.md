@@ -1,11 +1,17 @@
 # Changelog
 
+## [0.1.0] - 2024-05-04
+
+### Added
+
+- Real `WhopSDK::Client` integration coverage across billing and webhook surface
+- Schema-driven in-memory CRUD, filtering, cursor pagination, and relation hydration
+- Lifecycle-aware billing side effects for payments, invoices, memberships, and refunds
+- Webhook fabrication, retrieval, signing, and real SDK unwrap coverage
+- Payment token helpers and `stripe-ruby-mock`-style test helper ergonomics
+- Adversarial stress coverage for create-heavy billing and refund loops
+- Create/update/action/list validation for highest-risk billing paths with real SDK error classes
+
 ## Unreleased
 
-- Added real `WhopSDK::Client` integration coverage across the currently exposed billing and webhook surface.
-- Added schema-driven in-memory CRUD, filtering, cursor pagination, and relation hydration.
-- Added lifecycle-aware billing side effects for payments, invoices, memberships, and refunds.
-- Added webhook fabrication, retrieval, signing, and real SDK unwrap coverage.
-- Added payment token helpers and `stripe-ruby-mock`-style test helper ergonomics.
-- Added adversarial stress coverage for create-heavy billing and refund loops.
-- Added create/update/action/list validation for the highest-risk billing paths with real SDK error classes.
+_No unreleased changes._
