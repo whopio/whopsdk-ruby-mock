@@ -118,6 +118,7 @@ The mock auto-derives routes from the Stainless-hosted OpenAPI spec:
 
 ## Docs
 
+- [Mock Factories](docs/mock-factories.md)
 - [Coverage Matrix](docs/coverage-matrix.md)
 - [Compatibility Matrix](docs/compatibility-matrix.md)
 - [SDK Surface Audit](docs/sdk-surface-audit.md)
