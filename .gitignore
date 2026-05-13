@@ -9,3 +9,8 @@
 
 # rspec failure tracking
 .rspec_status
+
+# Internal docs (keep local only)
+docs/plan.md
+docs/execution.md
+docs/context.md
