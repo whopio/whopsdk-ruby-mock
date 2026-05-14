@@ -37,13 +37,12 @@ It does not imply full published SDK parity.
 
 For the current covered vs uncovered SDK surface, see:
 
-- [SDK Surface Audit](/Users/destineewalston/whop_mock/docs/sdk-surface-audit.md)
+- [Coverage Matrix](coverage-matrix.md)
 
 ## Upgrade Guidance
 
 If you move the SDK or Ruby version forward:
 
 1. run the full suite
-2. review [Coverage Matrix](/Users/destineewalston/whop_mock/docs/coverage-matrix.md)
-3. review [SDK Surface Audit](/Users/destineewalston/whop_mock/docs/sdk-surface-audit.md)
-4. re-check webhook unwrap behavior and any typed webhook model assumptions
+2. review [Coverage Matrix](coverage-matrix.md)
+3. re-check webhook unwrap behavior and any typed webhook model assumptions

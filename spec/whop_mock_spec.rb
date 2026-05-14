@@ -8,12 +8,12 @@ RSpec.describe WhopMock do
     expect(WhopMock::VERSION).not_to be nil
   end
 
-  it "prefers explicit spec_path, then auto-fetches from Stainless, then falls back to bundled" do
+  it "prefers explicit spec_path, then vendored and fixture specs, then auto-fetch, then bundled" do
     configuration = WhopMock::Configuration.new
     configuration.auto_fetch_spec = false # Disable auto-fetch for this test
 
-    # Falls back to bundled when auto-fetch disabled and no explicit path
-    expect(configuration.resolved_spec_path).to eq(configuration.bundled_spec_path)
+    # Falls back to vendored spec first when available
+    expect(configuration.resolved_spec_path).to eq(configuration.vendored_spec_path)
 
     # Explicit spec_path takes precedence
     Dir.mktmpdir do |dir|

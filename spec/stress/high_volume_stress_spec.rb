@@ -3,7 +3,7 @@
 require "spec_helper"
 require_relative "../support/stress_suite_helper"
 
-RSpec.describe "Speckel-style stress suite" do
+RSpec.describe "High-volume stress suite" do
   around do |example|
     original_configuration = StressSuiteHelper.reset_mock_configuration!
     example.run

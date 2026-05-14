@@ -19,15 +19,29 @@ module WhopMock
       # 1. Explicit user-provided path
       return spec_path if spec_path && File.exist?(spec_path)
 
-      # 2. Auto-fetch from Stainless (cached)
+      # 2. Vendored synced artifact, if present
+      return vendored_spec_path if File.exist?(vendored_spec_path)
+
+      # 3. Repo fixture contract, if present
+      return fixture_spec_path if File.exist?(fixture_spec_path)
+
+      # 4. Auto-fetch/cache if enabled
       if auto_fetch_spec
         fetcher = SpecFetcher.new(debug_io: debug ? debug_io : nil)
         fetched = fetcher.fetch
         return fetched if fetched
       end
 
-      # 3. Fallback to bundled placeholder
+      # 5. Fallback to bundled placeholder
       bundled_spec_path
+    end
+
+    def vendored_spec_path
+      File.expand_path("../../vendor/openapi/whop-openapi.yml", __dir__)
+    end
+
+    def fixture_spec_path
+      File.expand_path("../../spec/fixtures/openapi.yml", __dir__)
     end
 
     def bundled_spec_path

@@ -69,6 +69,19 @@ WhopMock.load_fixtures("spec/fixtures/seeds.yml")
 WhopMock.generate_example("membership", { "status" => "trialing" })
 ```
 
+### Mock Factories
+
+```ruby
+helper = WhopMock.create_test_helper
+
+company = helper.create_company("title" => "Acme")
+product = helper.create_product("company_id" => company["id"], "title" => "Starter")
+plan = helper.create_plan("company_id" => company["id"], "product_id" => product["id"], "title" => "Monthly")
+stack = helper.create_billing_stack
+```
+
+See [Mock Factories](docs/mock-factories.md) for the documented factory surface.
+
 ### Error Injection
 
 ```ruby
@@ -105,10 +118,26 @@ WhopMock.toggle_debug(true)
 
 ## OpenAPI Sync
 
-The mock auto-derives routes from the Stainless-hosted OpenAPI spec:
+The mock derives routes, schemas, and example shapes from the active OpenAPI contract. In repo usage, that means:
+
+- explicit `config.spec_path`, if provided
+- otherwise a vendored artifact at `vendor/openapi/whop-openapi.yml`, if present
+- otherwise the repo fixture at `spec/fixtures/openapi.yml`
+
+Refresh the vendored artifact with:
 
 ```bash
 ./scripts/sync_openapi
+```
+
+By default the sync script copies from the repo fixture for deterministic local/test use.
+
+To sync from another source:
+
+```bash
+SOURCE_PATH=/path/to/openapi.yml ./scripts/sync_openapi
+# or
+SOURCE_URL=https://example.com/openapi.yml ./scripts/sync_openapi
 ```
 
 ## Compatibility
@@ -121,5 +150,4 @@ The mock auto-derives routes from the Stainless-hosted OpenAPI spec:
 - [Mock Factories](docs/mock-factories.md)
 - [Coverage Matrix](docs/coverage-matrix.md)
 - [Compatibility Matrix](docs/compatibility-matrix.md)
-- [SDK Surface Audit](docs/sdk-surface-audit.md)
 - [Frontend Test Mode](docs/frontend-test-mode-contract.md)

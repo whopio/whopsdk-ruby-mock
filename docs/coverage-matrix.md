@@ -15,14 +15,13 @@ Current suite status:
 
 Spec source:
 
-- Stainless-hosted OpenAPI: `https://app.stainless.com/api/spec/documented/whopsdk/openapi.documented.yml`
-- Same source as API reference docs and SDK generation
-- Sync with: `./scripts/sync_openapi`
+- Active contract artifact: `vendor/openapi/whop-openapi.yml` when present
+- Repo fallback contract: `spec/fixtures/openapi.yml`
+- Refresh or replace the vendored artifact with: `./scripts/sync_openapi`
 
-Last SDK audit:
+SDK basis:
 
 - published `whop_sdk 0.0.38`
-- see [docs/sdk-surface-audit.md](/Users/destineewalston/whop_mock/docs/sdk-surface-audit.md)
 
 ## Resource Coverage
 
@@ -52,6 +51,64 @@ Last SDK audit:
 | `webhooks` | `create`, `retrieve`, `list`, `update`, `delete`, `unwrap` | Yes | Basic create validation via schema-backed shape | Basic update only | Yes | Core consumer path | Signed unwrap tested against real SDK |
 | `withdrawals` | `create`, `retrieve`, `list` | Yes | Basic create | N/A | Basic list | Indirect only | `list` validation requires `company_id` |
 | `events` | `retrieve` via mock event store | Indirect | N/A | N/A | N/A | Core producer path | Used to support fabricated webhook retrieval |
+
+## Wider SDK Surface
+
+The mock should still not be described as broad whole-SDK parity.
+
+The more accurate description is:
+
+- strong parity on the billing-oriented and payout-adjacent subset we intentionally targeted
+- limited or no parity on adjacent product/application/chat/affiliate/user resource families
+- no mock-only Stripe-shaped resource surfaces carried as SDK parity
+
+### Current Billing-Focused Coverage
+
+The current mock is strongest on:
+
+- `account_links`
+- `companies`
+- `checkout_configurations`
+- `dispute_alerts`
+- `disputes`
+- `fee_markups`
+- `ledger_accounts`
+- `members`
+- `products`
+- `plans`
+- `memberships`
+- `payment_methods`
+- `payout_accounts`
+- `payout_methods`
+- `payments`
+- `invoices`
+- `promo_codes`
+- `refunds`
+- `setup_intents`
+- `transfers`
+- `topups`
+- `webhooks`
+- `withdrawals`
+
+For those resources, the mock now covers:
+
+- real `WhopSDK::Client` interception
+- stateful create/retrieve/update/list/action behavior where those SDK methods exist
+- list/filter support for the higher-value billing params we modeled
+- create/update/action validation on the highest-risk billing paths
+- webhook fabrication/signing and real SDK `unwrap`
+- multi-step adversarial flows through the billing graph
+
+### Public SDK Families Not Currently Covered
+
+These public SDK families remain intentionally out of scope in the live mock:
+
+- `affiliates`
+- `apps`
+- `chat_channels`
+- `users`
+
+Those are scope facts, not hidden parity gaps inside the current billing/payout target.
 
 ## Validation Coverage
 
@@ -204,9 +261,7 @@ Current isolation is per session/process. There is no cross-process stateful ser
 
 ### 6. The wider published SDK surface is not covered
 
- The current mock is intentionally strongest on billing-oriented resources. Public SDK resource families such as `affiliates`, `apps`, `chat_channels`, and `users` are not currently implemented in this repo.
-
-See [docs/sdk-surface-audit.md](/Users/destineewalston/whop_mock/docs/sdk-surface-audit.md) for the explicit covered vs uncovered surface.
+The current mock is intentionally strongest on billing-oriented resources. Public SDK resource families such as `affiliates`, `apps`, `chat_channels`, and `users` are not currently implemented in this repo.
 
 ## Recommended Next Hardening Order
 

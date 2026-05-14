@@ -3,31 +3,43 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TARGET_PATH="${ROOT_DIR}/vendor/openapi/whop-openapi.yml"
-
-# Same source as API reference docs and SDK generation
-SOURCE_URL="https://app.stainless.com/api/spec/documented/whopsdk/openapi.documented.yml"
+DEFAULT_SOURCE_PATH="${ROOT_DIR}/spec/fixtures/openapi.yml"
+SOURCE_PATH="${SOURCE_PATH:-${1:-}}"
+SOURCE_URL="${SOURCE_URL:-}"
 
 mkdir -p "$(dirname "${TARGET_PATH}")"
 
-echo "Fetching OpenAPI spec from Stainless..."
-echo "  ${SOURCE_URL}"
+if [[ -n "${SOURCE_PATH}" ]]; then
+  if [[ ! -f "${SOURCE_PATH}" ]]; then
+    echo "OpenAPI source file not found: ${SOURCE_PATH}" >&2
+    exit 1
+  fi
+  cp "${SOURCE_PATH}" "${TARGET_PATH}"
+  SOURCE_DESC="${SOURCE_PATH}"
+elif [[ -n "${SOURCE_URL}" ]]; then
+  echo "Fetching OpenAPI spec..."
+  echo "  ${SOURCE_URL}"
 
-if ! curl -fsSL "${SOURCE_URL}" -o "${TARGET_PATH}"; then
-  echo "Failed to fetch OpenAPI spec" >&2
-  exit 1
+  if ! curl -fsSL "${SOURCE_URL}" -o "${TARGET_PATH}"; then
+    echo "Failed to fetch OpenAPI spec from ${SOURCE_URL}" >&2
+    exit 1
+  fi
+  SOURCE_DESC="${SOURCE_URL}"
+else
+  cp "${DEFAULT_SOURCE_PATH}" "${TARGET_PATH}"
+  SOURCE_DESC="${DEFAULT_SOURCE_PATH}"
 fi
 
 cat <<EOF
 
-Synced OpenAPI spec from Stainless:
-  source: ${SOURCE_URL}
+Synced OpenAPI spec:
+  source: ${SOURCE_DESC}
   target: ${TARGET_PATH}
   size:   $(wc -c < "${TARGET_PATH}" | tr -d ' ') bytes
 
-This is the same spec used for:
-  - API reference docs (public-docs)
-  - SDK generation (Stainless)
-  - whop_mock (this repo)
+Current workflow:
+  - default: sync from the repo fixture for deterministic local/test use
+  - optional: set SOURCE_PATH or SOURCE_URL to sync from a canonical upstream export
 
 Verification:
   bundle exec rspec
